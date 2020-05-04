@@ -6,4 +6,5 @@ import idv.victor.entity.Users;
 
 public interface UserRepository extends MongoRepository<Users,String>{
 
+	public Users findByUserid(String userid);
 }

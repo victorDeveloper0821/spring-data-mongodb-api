@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import idv.victor.dao.UserRepository;
 import idv.victor.entity.Users;
+import idv.victor.service.MemberService;
 
 @RequestMapping(value="/api/user")
 @Controller
@@ -25,40 +26,41 @@ public class UserController {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private MemberService memberService;
+	
 	@RequestMapping(value="/create",method= RequestMethod.POST,produces="application/json;charset=utf-8")
 	@ResponseBody
-	public Users createUser(HttpServletRequest req,Model model,@RequestBody Users user) {
-		user.setId(ObjectId.get().toHexString());
-		userRepository.save(user);
-		return user;
+	public String createUser(HttpServletRequest req,Model model,@RequestBody Users user) {
+		return memberService.doSave(user);
 		
 	}
 	
 	@RequestMapping(value="/update/{id}",method= RequestMethod.POST,produces="application/json;charset=utf-8")
 	@ResponseBody
-	public Users updateUser(HttpServletRequest req,Model model,@RequestBody Users user,@PathVariable String id) {
-		Users userToEdit = userRepository.findById(id).orElse(null);
-		if(Objects.nonNull(user)) {
-			userToEdit.setUserid(user.getUserid());
-			userToEdit.setPassword(user.getPassword());
-			userToEdit.setEmail(user.getEmail());
-		}
-		userRepository.save(userToEdit);
-		return userToEdit;
+	public String updateUser(HttpServletRequest req,Model model,@RequestBody Users user,@PathVariable String id) {
+		return memberService.doUpdate(id, user);
 		
 	}
 
 	@RequestMapping(value="/findOne/{id}",method= RequestMethod.GET,produces="application/json;charset=utf-8")
 	@ResponseBody
-	public Users findUser(HttpServletRequest req,Model model,@PathVariable String id) {
-		return userRepository.findById(id).orElse(null);
+	public String findUser(HttpServletRequest req,Model model,@PathVariable String id) {
+		return memberService.findOne(id);
 		
 	}
 	
 	@RequestMapping(value="/list",method= RequestMethod.GET,produces="application/json;charset=utf-8")
 	@ResponseBody
-	public List<Users> listUsers(HttpServletRequest req,Model model) {
-		return userRepository.findAll();
+	public String listUsers(HttpServletRequest req,Model model) {
+		return memberService.findAll();
+		
+	}
+
+	@RequestMapping(value="/delete/{id}",method= RequestMethod.GET,produces="application/json;charset=utf-8")
+	@ResponseBody
+	public String deleteUsers(HttpServletRequest req,Model model,@PathVariable String id) {
+		return memberService.deleteUser(id);
 		
 	}
 
