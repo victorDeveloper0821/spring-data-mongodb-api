@@ -1,5 +1,6 @@
 package idv.victor.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,10 +24,7 @@ public class MemberService {
 
 	@Autowired
 	private UserRepository userRepository;
-	
-//	@Autowired
-//	private EncryptUtil encryptUtil;
-	
+		
 	public String doSave(Users user) {
 		String result = "";
 		ObjectMapper mapper = new ObjectMapper();
@@ -38,7 +36,8 @@ public class MemberService {
 			userRepository.save(user);
 			jsonmap.put("results", user);
 		}else {
-			jsonmap.put("status", "fail");			
+			jsonmap.put("status", "fail");
+			jsonmap.put("results", new ArrayList<Users>());
 		}
 		
 		try {
@@ -69,6 +68,7 @@ public class MemberService {
 				jsonmap.put("results", userToEdit);
 			}else {
 				jsonmap.put("status", "fail");
+				jsonmap.put("results", new ArrayList<Users>());
 
 			}
 		}
@@ -97,7 +97,7 @@ public class MemberService {
 				jsonmap.put("results", userToFind);
 			}else {
 				jsonmap.put("status", "fail");
-
+				jsonmap.put("results", new ArrayList<Users>());
 			}
 		}
 		try {
@@ -117,9 +117,10 @@ public class MemberService {
 		List<Users> users = userRepository.findAll();
 		if(users.size()>0) {
 			jsonmap.put("status", "ok");
-			jsonmap.put("result", users);
+			jsonmap.put("results", users);
 		}else {
 			jsonmap.put("status","no data");
+			jsonmap.put("results", new ArrayList<Users>());
 		}
 		try {
 			result = mapper.writeValueAsString(jsonmap);
@@ -142,6 +143,7 @@ public class MemberService {
 			userRepository.delete(userToEdit);
 		}else {
 			jsonmap.put("status", "not found");
+			jsonmap.put("results", new ArrayList<Users>());
 		}
 		try {
 			result = mapper.writeValueAsString(jsonmap);

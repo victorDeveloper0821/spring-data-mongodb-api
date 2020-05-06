@@ -1,11 +1,8 @@
 package idv.victor.controller;
 
-import java.util.List;
-import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import idv.victor.dao.UserRepository;
 import idv.victor.entity.Users;
 import idv.victor.service.MemberService;
 
@@ -23,9 +19,6 @@ import idv.victor.service.MemberService;
 @Controller
 public class UserController {
 
-	@Autowired
-	private UserRepository userRepository;
-	
 	@Autowired
 	private MemberService memberService;
 	
